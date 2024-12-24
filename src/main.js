@@ -3,4 +3,5 @@ const navLinks = document.getElementById('nav-links');
 
 navOpen.addEventListener('click', () => {
     navLinks.classList.toggle('hidden');
+    navOpen.classList.toggle('rotate-animation-close');
 });
