@@ -1,7 +1,9 @@
-const navOpen = document.getElementById('open-nav-toggle');
+const navOpenToggle = document.getElementById('open-nav-toggle');
 const navLinks = document.getElementById('nav-links');
 
-navOpen.addEventListener('click', () => {
+
+//Navigation Toggle
+navOpenToggle.addEventListener('click', () => {
     navLinks.classList.toggle('hidden');
-    navOpen.classList.toggle('rotate-animation-close');
+    navOpenToggle.classList.toggle('rotate-animation-close');
 });
