@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momentum.ai | Increase Productivity & Retention</title>
+    <link rel="stylesheet" href="../dist/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="font-poppins bg-gradient-to-br from-indigo-100 to-indigo-200 h-screen overflow-hidden">
+    
+    <!--Navigation Bar-->
+    <div>
+        <nav class="max-w-[80%] bg-white bg-opacity-50 backdrop-blur-md rounded-full mx-auto my-10 p-6 flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <span class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400">Momentum.ai</span>
+            <ul class="flex items-center gap-2">
+                <li class="bg-white px-4 py-2 rounded-lg group cursor-pointer">
+                    <a href="#" class="group-hover:text-indigo-600 transition-colors duration-300">Study</a>
+                </li>
+                <li class="bg-white px-4 py-2 rounded-lg group cursor-pointer">
+                    <a href="#" class="group-hover:text-indigo-600 transition-colors duration-300">Calendar</a>
+                </li>
+                <li class="bg-white px-4 py-2 rounded-lg group cursor-pointer">
+                    <a href="#" class="group-hover:text-indigo-600 transition-colors duration-300">Tasks</a>
+                </li>
+                <li class="bg-white px-4 py-2 rounded-lg group cursor-pointer">
+                    <a href="#" class="group-hover:text-indigo-600 transition-colors duration-300">Progress</a>
+                </li>
+            </ul>
+            </div>
+            <button class="hover-shadow px-6 py-2 bg-gradient-to-r from-indigo-600 to-indigo-400 text-white">Contact</button>
+        </nav>
+    </div>
+
+    <!--Login Section-->
+    <section class="flex items-center justify-center max-w-[90%] mx-auto mt-24">
+        <div class="flex-1">
+            <h1 class="text-6xl font-semibold mb-8">Master your <span class="text-indigo-500">Time</span><br>& Boost your <span class="text-indigo-500">Focus</span></h1>
+            <div class="text-lg pr-8">    
+                <p class="pb-2">Momentum.ai is a <span class="text-indigo-500">pomodoro study tracker</span> that helps you stay locked into your learning and boost productivity.</p>
+                <p>Keep track of your progress and get <span class="text-indigo-500">AI-powered help</span> to optimize your study sessions.</p>
+            </div>
+        </div>
+        <div class="flex-1 text-center flex items-center justify-center">
+            <form action="/login" method="POST" class="w-full mx-12">
+                <h2 class="text-indigo-500 text-xl font-semibold">Welcome back!</h2>
+                <p class="pb-4">Log into your account</p>
+
+                <!--Email Input-->
+                <div class="flex flex-col">
+                    <label class="pb-2" for="email">Email</label>
+                    <input class="mb-4 rounded-full py-2 px-4" type="email" id="email" name="email" required>
+                </div>
+
+                <!--Password Input-->
+                <div class="flex flex-col">
+                    <label class="pb-2" for="password">Password</label>
+                    <input class="mb-8 rounded-full py-2 px-4" type="password" id="password" name="password" required>
+                </div>
+
+                <!--Submit Button-->
+                <div>
+                    <button class="hover-shadow text-lg px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 text-white" type="submit">Submit</button>
+                </div>
+
+                <!--Forgot Password/Sign Up-->
+                <div class="flex justify-between mt-8 mx-12">
+                    <a href="#" class="px-4 py-2 bg-white rounded-lg hover:text-indigo-600 transition-colors duration-300">Forgot Password?</a>
+                    <a href="#" class="px-4 py-2 bg-white rounded-lg hover:text-indigo-600 transition-colors duration-300">Sign Up Here</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+</body>
+</html>
