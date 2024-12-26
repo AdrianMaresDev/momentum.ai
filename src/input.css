@@ -26,3 +26,66 @@ html {
     transform: rotate(0deg);
     transition: transform 0.3s ease;
 }
+
+.clock > div:not(.colon) {
+    width: 70px;
+    height: 70px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container {
+    width: 100%;
+    height: 30rem;
+}
+
+.circle-container {
+    width: 400px;
+    height: 400px;
+    background-color: gray;
+    border-radius: 50%;
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.semicircle {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: right center;
+}
+
+.semicircle:nth-child(1) {
+    background-color: #5047E5;
+    z-index: 2;
+}
+
+.semicircle:nth-child(2) {
+    background-color: #5047E5;
+    z-index: 3;
+}
+
+.semicircle:nth-child(3) {
+    background-color: gray;
+    z-index: 4;
+    display: none;
+}
+
+.outer-circle {
+    width: 390px;
+    height: 390px;
+    background-color: white;
+    border-radius: 50%;
+    z-index: 5;
+}
+
+.timer-container {
+    z-index: 6;
+}
