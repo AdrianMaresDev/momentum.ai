@@ -8,11 +8,6 @@ navOpenToggle.addEventListener('click', () => {
     navOpenToggle.classList.toggle('rotate-animation-close');
 });
 
-//Get user input for the timer
-let studyTime = document.getElementById('study-time').value;
-let breakTime = document.getElementById('break-time').value;
-let numSessions = document.getElementById('num-sessions').value;
-
 //TODO
 //Display time depending on user input, counting up to the break.
 //Upon completion, do the same thing with the break input.
@@ -26,23 +21,40 @@ let numSessions = document.getElementById('num-sessions').value;
 //Display circle around the time display?
 
 //Timer Functionality
+
 const semicircles = document.querySelectorAll('.semicircle');
+const form = document.getElementById('pomodoro-form');
+const minsDisplay = document.getElementById('minutes');
+const secsDisplay = document.getElementById('seconds');
 
-const hr = 0;
-const min = 0;
-const sec = 10;
 
-const hours = hr * 3600000;
-const minutes = min * 60000;
-const seconds = sec * 1000;
-const setTime = hours + minutes + seconds;
-const startTime = Date.now();
-const futureTime = startTime + setTime;
 
-const timerLoop = setInterval(countDownTimer);
-countDownTimer();
+let timerLoop;
+let futureTime;
+let setTime;
 
-function countDownTimer() {
+//Form Submission
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    //Get user input for the timer
+    const studyTime = parseInt(document.getElementById('study-time').value, 10) || 0;
+    const breakTime = parseInt(document.getElementById('break-time').value, 10) || 0;
+    const numSessions = parseInt(document.getElementById('num-sessions').value, 10) || 0;
+
+    //Convert time to milliseconds
+    setTime = studyTime * 60000;
+    const startTime = Date.now();
+    futureTime = startTime + setTime;
+
+    if(timerLoop) clearInterval(timerLoop);
+
+    timerLoop = setInterval(() => countDownTimer(futureTime, setTime), 1000);
+    countDownTimer(futureTime, setTime);
+});
+
+//Countdown Timer
+function countDownTimer(futureTime, setTime) {
     const currentTime = Date.now();
     const remainingTime = futureTime - currentTime;
     const angle = (remainingTime / setTime) * 360;
@@ -57,10 +69,14 @@ function countDownTimer() {
         semicircles[1].style.transform = `rotate(${angle}deg)`;
     }
 
-    if(remainingTime < 0) {
+    if(remainingTime >= 0) {
+        const mins = Math.floor(remainingTime / 60000);
+        const secs = Math.floor((remainingTime % 60000) / 1000);
+        minsDisplay.textContent = String(mins).padStart(2, '0');
+        secsDisplay.textContent = String(secs).padStart(2, '0');
+    } else {
         clearInterval(timerLoop);
-        semicircles[0].style.display = 'none';
-        semicircles[1].style.display = 'none';
-        semicircles[2].style.display = 'none';
+        minsDisplay.textContent = '00';
+        secsDisplay.textContent = '00';
     }
 }
