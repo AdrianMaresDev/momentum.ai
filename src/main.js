@@ -27,17 +27,15 @@ const form = document.getElementById('pomodoro-form');
 const minsDisplay = document.getElementById('minutes');
 const secsDisplay = document.getElementById('seconds');
 
-
-
 let timerLoop;
 let futureTime;
 let setTime;
 
-//Form Submission
+//Form Submission to prevent page from refreshing
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    //Get user input for the timer
+    //Get user input for the timer as a number
     const studyTime = parseInt(document.getElementById('study-time').value, 10) || 0;
     const breakTime = parseInt(document.getElementById('break-time').value, 10) || 0;
     const numSessions = parseInt(document.getElementById('num-sessions').value, 10) || 0;
@@ -47,16 +45,38 @@ form.addEventListener('submit', (e) => {
     const startTime = Date.now();
     futureTime = startTime + setTime;
 
+    //Clear any existing timer
     if(timerLoop) clearInterval(timerLoop);
 
-    timerLoop = setInterval(() => countDownTimer(futureTime, setTime), 1000);
-    countDownTimer(futureTime, setTime);
+    countDownTimer();
 });
 
-//Countdown Timer
-function countDownTimer(futureTime, setTime) {
-    const currentTime = Date.now();
-    const remainingTime = futureTime - currentTime;
+function countDownTimer() {
+    function updateTimer() {
+        const currentTime = Date.now();
+        const remainingTime = futureTime - currentTime;
+
+        if(remainingTime > 0) {
+            updateDisplay(remainingTime);
+            updateSemicircles(remainingTime);
+            timerLoop = requestAnimationFrame(updateTimer);
+        } else {
+            stopTimer();
+        }
+    }
+    timerLoop = requestAnimationFrame(updateTimer);
+}
+
+function stopTimer() {
+    if(timerLoop) cancelAnimationFrame(timerLoop);
+}
+
+function updateDisplay(remainingTime) {
+    const mins = Math.floor(remainingTime / 60000);
+    const secs = Math.floor((remainingTime % 60000) / 1000);
+}
+
+function updateSemicircles(remainingTime) {
     const angle = (remainingTime / setTime) * 360;
 
     if(angle > 180) {
