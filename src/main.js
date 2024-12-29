@@ -26,6 +26,7 @@ const semicircles = document.querySelectorAll('.semicircle');
 const form = document.getElementById('pomodoro-form');
 const minsDisplay = document.getElementById('minutes');
 const secsDisplay = document.getElementById('seconds');
+const timerTitle = document.getElementById('timer-title');
 
 let timerLoop;
 let futureTime;
@@ -39,9 +40,9 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     //Get user input for the timer as a number
-    const studyTime = parseInt(document.getElementById('study-time').value, 10) || 0;
-    const breakTime = parseInt(document.getElementById('break-time').value, 10) || 0;
-    const numSessions = parseInt(document.getElementById('num-sessions').value, 10) || 0;
+    studyTime = parseInt(document.getElementById('study-time').value, 10) || 0;
+    breakTime = parseInt(document.getElementById('break-time').value, 10) || 0;
+    numSessions = parseInt(document.getElementById('num-sessions').value, 10) || 0;
 
     //Convert time to milliseconds
     setTime = studyTime * 60000;
@@ -119,6 +120,7 @@ function startBreak() {
         //Update UI for the break phase
         updateDisplay(setTime);
         updateSemicircles(setTime);
+        timerTitle.textContent = 'Break Time';
 
         countDownTimer();
         console.log(`Starting break for session ${currentSession}.`)
@@ -140,6 +142,7 @@ function startStudy() {
         //Update UI for study phase
         updateDisplay(setTime);
         updateSemicircles(setTime);
+        timerTitle.textContent = 'Time Remaining';
 
         countDownTimer();
         console.log(`Starting study for session ${currentSession}.`);
@@ -157,5 +160,6 @@ function handleCompletion() {
 function endSessions() {
     minsDisplay.textContent = '00';
     secsDisplay.textContent = '00';
+    timerTitle.textContent = 'Sessions Complete!'
     console.log('All sessions complete.');
 }
