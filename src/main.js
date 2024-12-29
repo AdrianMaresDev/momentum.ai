@@ -30,8 +30,11 @@ const secsDisplay = document.getElementById('seconds');
 let timerLoop;
 let futureTime;
 let setTime;
+let breakTime;
+let studyTime;
+let numSessions;
 
-//Form Submission to prevent page from refreshing
+//Form submission to prevent page from refreshing
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -69,6 +72,7 @@ function countDownTimer() {
 
 function stopTimer() {
     if(timerLoop) cancelAnimationFrame(timerLoop);
+    handleCompletion();
 }
 
 function updateDisplay(remainingTime) {
@@ -99,4 +103,59 @@ function updateSemicircles(remainingTime) {
         minsDisplay.textContent = '00';
         secsDisplay.textContent = '00';
     }
+}
+
+//Change timer from study to break time
+let currentSession = 1;
+let isStudying = true;
+
+function startBreak() {
+    if(isStudying && futureTime - Date.now() <= 0) {
+        isStudying = false;
+        setTime = breakTime * 60000;
+        const startTime = Date.now();
+        futureTime = startTime + setTime;
+
+        //Update UI for the break phase
+        updateDisplay(setTime);
+        updateSemicircles(setTime);
+
+        countDownTimer();
+        console.log(`Starting break for session ${currentSession}.`)
+    }
+}
+
+function startStudy() {
+    if(!isStudying && futureTime - Date.now() <= 0) {
+        currentSession++;
+        if(currentSession > numSessions) {
+            endSessions();
+            return;
+        }
+        isStudying = true;
+        setTime = studyTime * 60000;
+        const startTime = Date.now();
+        futureTime = startTime + setTime;
+
+        //Update UI for study phase
+        updateDisplay(setTime);
+        updateSemicircles(setTime);
+
+        countDownTimer();
+        console.log(`Starting study for session ${currentSession}.`);
+    }
+}
+
+function handleCompletion() {
+    if(isStudying) {
+        startBreak();
+    } else {
+        startStudy();
+    }
+}
+
+function endSessions() {
+    minsDisplay.textContent = '00';
+    secsDisplay.textContent = '00';
+    console.log('All sessions complete.');
 }
