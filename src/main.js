@@ -16,12 +16,17 @@ navOpenToggle.addEventListener('click', () => {
 //DISPLAY
 //When user clicks start timer, hide input form and only display timer.
 //Change start timer button to switch between start and pause.
+//Update timer title to display the current session later on
 
 //Progress bar or timer? Both? Find a way to display the total time spent studying.
 //Display circle around the time display?
 
-//Timer Functionality
+//Start, pause, and reset functionality
+const startBtn = document.getElementById('start-btn');
+const pauseBtn = document.getElementById('pause-btn');
+const resetBtn = document.getElementById('reset-btn');
 
+//Timer Functionality
 const semicircles = document.querySelectorAll('.semicircle');
 const form = document.getElementById('pomodoro-form');
 const minsDisplay = document.getElementById('minutes');
@@ -163,3 +168,45 @@ function endSessions() {
     timerTitle.textContent = 'Sessions Complete!'
     console.log('All sessions complete.');
 }
+
+let isRunning = false;
+let pausedTime = 0;
+
+//Start and pause button functionality
+startBtn.addEventListener('click', () => {
+    if(!isRunning) {
+        isRunning = true;
+
+        if(pausedTime > 0) {
+            futureTime = Date.now() + pausedTime;
+            pausedTime = 0;
+        } else if(!futureTime) {
+            futureTime = Date.now() + setTime;
+        }
+
+        countDownTimer();
+    }
+    updateDisplay();
+    updateSemicircles();
+});
+
+pauseBtn.addEventListener('click', () => {
+    if(isRunning) {
+        isRunning = false;
+        pausedTime = futureTime - Date.now();
+        cancelAnimationFrame(timerLoop);
+    }
+});
+
+resetBtn.addEventListener('click', () => {
+    isRunning = false;
+    pausedTime = 0;
+    setTime = 0;
+    futureTime = 0;
+    cancelAnimationFrame(timerLoop);
+
+    minsDisplay.textContent = '00';
+    secsDisplay.textContent = '00';
+    timerTitle.textContent = 'Time Remaining';
+    semicircles.forEach(circle => circle.style.transform = 'rotate(0deg)');
+});

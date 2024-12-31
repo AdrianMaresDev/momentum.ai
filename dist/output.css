@@ -639,6 +639,22 @@ video {
   width: 100%;
 }
 
+.w-8 {
+  width: 2rem;
+}
+
+.w-20 {
+  width: 5rem;
+}
+
+.w-28 {
+  width: 7rem;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
 .max-w-\[80\%\] {
   max-width: 80%;
 }
@@ -679,6 +695,10 @@ video {
   justify-content: space-between;
 }
 
+.gap-16 {
+  gap: 4rem;
+}
+
 .gap-4 {
   gap: 1rem;
 }
@@ -691,8 +711,8 @@ video {
   gap: 3rem;
 }
 
-.gap-16 {
-  gap: 4rem;
+.gap-6 {
+  gap: 1.5rem;
 }
 
 .rounded-full {
