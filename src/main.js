@@ -169,7 +169,7 @@ function endSessions() {
     console.log('All sessions complete.');
 }
 
-let isRunning = false;
+let isRunning = true;
 let pausedTime = 0;
 
 //Start and pause button functionality
@@ -186,8 +186,6 @@ startBtn.addEventListener('click', () => {
 
         countDownTimer();
     }
-    updateDisplay();
-    updateSemicircles();
 });
 
 pauseBtn.addEventListener('click', () => {
@@ -203,10 +201,20 @@ resetBtn.addEventListener('click', () => {
     pausedTime = 0;
     setTime = 0;
     futureTime = 0;
+    currentSession = 0;
+    isStudying = true;
     cancelAnimationFrame(timerLoop);
 
     minsDisplay.textContent = '00';
     secsDisplay.textContent = '00';
     timerTitle.textContent = 'Time Remaining';
+
+    //Update the circle display
     semicircles.forEach(circle => circle.style.transform = 'rotate(0deg)');
+
+    //Reset the form values
+    //Figure out how to restart the entire study.break loop
+    //studyTime = 0;
+    //breakTime = 0;
+    //numSessions = 0;
 });
