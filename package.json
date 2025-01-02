@@ -2,18 +2,25 @@
   "name": "momentum-ai",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+    "dev": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch",
+    "server": "node --watch ./src/server.js",
+    "build": "npx tailwindcss -i ./public/input.css -o ./public/output.css --minify"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "A full-stack pomodoro application that uses a NodeJS backend, TailwindCSS, and JWT authentication.",
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }
