@@ -66,6 +66,7 @@
 
                     <!--Email Input-->
                     <div class="flex flex-col">
+                        <p id="error-msg" class="text-red-500 hidden">Could not authenticate</p>
                         <label class="pb-2" for="email">Email</label>
                         <input class="mb-4 rounded-full py-2 px-4" type="email" id="email" name="email" required>
                     </div>
@@ -78,13 +79,13 @@
 
                     <!--Submit Button-->
                     <div>
-                        <button class="hover-shadow text-lg px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 text-white" type="submit">Submit</button>
+                        <button id="auth-btn" class="hover-shadow text-lg px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 text-white" type="submit">Submit</button>
                     </div>
 
                     <!--Forgot Password/Sign Up-->
                     <div class="flex justify-between mt-6 mx-0 lg:mx-12 gap-4">
-                        <a href="#" class="px-4 py-2 bg-white rounded-lg hover:text-indigo-600 transition-colors duration-300">Forgot Password?</a>
-                        <a href="#" class="px-4 py-2 bg-white rounded-lg hover:text-indigo-600 transition-colors duration-300">Sign Up</a>
+                        <button class="px-4 py-2 bg-white rounded-lg hover:text-indigo-600 transition-colors duration-300">Forgot Password?</button>
+                        <button id="register-btn" class="px-4 py-2 bg-white rounded-lg hover:text-indigo-600 transition-colors duration-300">Sign Up</button>
                     </div>
                 </form>
             </div>

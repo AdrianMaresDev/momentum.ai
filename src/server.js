@@ -1,6 +1,5 @@
-//Install dotenv at a later date
-
 import express from 'express';
+import dotenv from 'dotenv';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
@@ -8,6 +7,7 @@ import taskRoutes from './routes/taskRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+dotenv.config();
 
 //Get the file path from the current module URL
 const __filename = fileURLToPath(import.meta.url);
@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 
 //Routes
 app.use('/auth', authRoutes);
-app.use('/tasks', authRoutes);
+app.use('/tasks', taskRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Server has started on port ${PORT}.`)
+    console.log(`Server has started on port ${PORT}.`);
 });

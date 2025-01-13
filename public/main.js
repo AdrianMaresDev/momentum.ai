@@ -8,213 +8,163 @@ navOpenToggle.addEventListener('click', () => {
     navOpenToggle.classList.toggle('rotate-animation-close');
 });
 
-//TODO
-//Display time depending on user input, counting up to the break.
-//Upon completion, do the same thing with the break input.
-//Loop through study and breaks depending on the number of sessions entered.
+//Authentication
+let token = localStorage.getItem('token');
 
-//DISPLAY
-//When user clicks start timer, hide input form and only display timer.
-//Change start timer button to switch between start and pause.
-//Update timer title to display the current session later on
+let isLoading = false;
+let isAuthenticating = false;
+let isRegistration = false;
+let selectedTab = 'All';
+let tasks = [];
 
-//Progress bar or timer? Both? Find a way to display the total time spent studying.
-//Display circle around the time display?
+const apiBase = '/';
 
-//Start, pause, and reset functionality
-const startBtn = document.getElementById('start-btn');
-const pauseBtn = document.getElementById('pause-btn');
-const resetBtn = document.getElementById('reset-btn');
+const authBtn = document.getElementById('auth-btn');
+const registerBtn = document.getElementById('register-btn');
+const password = document.getElementById('password');
+const error = document.getElementById('error-msg');
 
-//Timer Functionality
-const semicircles = document.querySelectorAll('.semicircle');
-const form = document.getElementById('pomodoro-form');
-const minsDisplay = document.getElementById('minutes');
-const secsDisplay = document.getElementById('seconds');
-const timerTitle = document.getElementById('timer-title');
+authBtn.addEventListener('click', authenticate);
+registerBtn.addEventListener('click', toggleIsRegister);
 
-let timerLoop;
-let futureTime;
-let setTime;
-let breakTime;
-let studyTime;
-let numSessions;
+//Add function to render tasks later
 
-//Form submission to prevent page from refreshing
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
+async function authenticate() {
 
-    //Get user input for the timer as a number
-    studyTime = parseInt(document.getElementById('study-time').value, 10) || 0;
-    breakTime = parseInt(document.getElementById('break-time').value, 10) || 0;
-    numSessions = parseInt(document.getElementById('num-sessions').value, 10) || 0;
+    //Access email and password values
+    const emailVal = email.value;
+    const passVal = password.value;
 
-    //Convert time to milliseconds
-    setTime = studyTime * 60000;
-    const startTime = Date.now();
-    futureTime = startTime + setTime;
+    //Guard clauses
+    if(
+        isLoading ||
+        isAuthenticating ||
+        !emailVal ||
+        !passVal ||
+        passVal.length < 6 ||
+        !emailVal.includes('@')
+    ) { return }
 
-    //Clear any existing timer
-    if(timerLoop) clearInterval(timerLoop);
+    //Reset error and set isAuthenticating to true
+    //Add error message to HTML later
+    error.style.display = 'none';
+    isAuthenticating = true;
+    authBtn.innerText = 'Authenticating';
 
-    countDownTimer();
-});
-
-function countDownTimer() {
-    function updateTimer() {
-        const currentTime = Date.now();
-        const remainingTime = futureTime - currentTime;
-
-        if(remainingTime > 0) {
-            updateDisplay(remainingTime);
-            updateSemicircles(remainingTime);
-            timerLoop = requestAnimationFrame(updateTimer);
+    try {
+        let data;
+        if(isRegistration) {
+            //Create an account
+            const response = await fetch(apiBase + 'auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: emailVal, password: passVal })
+            });
+            data = await response.json();
         } else {
-            stopTimer();
+            //Log into existing account
+            const response = await fetch(apiBase + 'auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: emailVal, password: passVal })
+            });
+            data = await response.json();
         }
-    }
-    timerLoop = requestAnimationFrame(updateTimer);
-}
+        if(data.token) {
+            token = data.token;
+            localStorage.setItem('token', token);
 
-function stopTimer() {
-    if(timerLoop) cancelAnimationFrame(timerLoop);
-    handleCompletion();
-}
+            //Move into loading
+            authBtn.innerText = 'Loading';
 
-function updateDisplay(remainingTime) {
-    const mins = Math.floor(remainingTime / 60000);
-    const secs = Math.floor((remainingTime % 60000) / 1000);
-}
+            //Fetch tasks, create function later
+            await fetchTasks();
 
-function updateSemicircles(remainingTime) {
-    const angle = (remainingTime / setTime) * 360;
-
-    if(angle > 180) {
-        semicircles[2].style.display = 'none';
-        semicircles[0].style.transform = 'rotate(180deg)';
-        semicircles[1].style.transform = `rotate(${angle}deg)`;
-    } else {
-        semicircles[2].style.display = 'block';
-        semicircles[0].style.transform = `rotate(${angle}deg)`;
-        semicircles[1].style.transform = `rotate(${angle}deg)`;
-    }
-
-    if(remainingTime >= 0) {
-        const mins = Math.floor(remainingTime / 60000);
-        const secs = Math.floor((remainingTime % 60000) / 1000);
-        minsDisplay.textContent = String(mins).padStart(2, '0');
-        secsDisplay.textContent = String(secs).padStart(2, '0');
-    } else {
-        clearInterval(timerLoop);
-        minsDisplay.textContent = '00';
-        secsDisplay.textContent = '00';
-    }
-}
-
-//Change timer from study to break time
-let currentSession = 1;
-let isStudying = true;
-
-function startBreak() {
-    if(isStudying && futureTime - Date.now() <= 0) {
-        isStudying = false;
-        setTime = breakTime * 60000;
-        const startTime = Date.now();
-        futureTime = startTime + setTime;
-
-        //Update UI for the break phase
-        updateDisplay(setTime);
-        updateSemicircles(setTime);
-        timerTitle.textContent = 'Break Time';
-
-        countDownTimer();
-        console.log(`Starting break for session ${currentSession}.`)
-    }
-}
-
-function startStudy() {
-    if(!isStudying && futureTime - Date.now() <= 0) {
-        currentSession++;
-        if(currentSession > numSessions) {
-            endSessions();
-            return;
+            //Show dashboard
+            showDashboard();
+        } else {
+            throw Error('Failed to Authenticate')
         }
-        isStudying = true;
-        setTime = studyTime * 60000;
-        const startTime = Date.now();
-        futureTime = startTime + setTime;
-
-        //Update UI for study phase
-        updateDisplay(setTime);
-        updateSemicircles(setTime);
-        timerTitle.textContent = 'Time Remaining';
-
-        countDownTimer();
-        console.log(`Starting study for session ${currentSession}.`);
+    } catch(err) {
+        console.log(err.message);
+        error.innerText = err.message;
+        error.style.display = 'block';
+    } finally {
+        authBtn.innerText = 'Submit';
+        isAuthenticating = false;
     }
 }
 
-function handleCompletion() {
-    if(isStudying) {
-        startBreak();
-    } else {
-        startStudy();
-    }
+function logout() {
+    //Clear cached token and clear states
 }
 
-function endSessions() {
-    minsDisplay.textContent = '00';
-    secsDisplay.textContent = '00';
-    timerTitle.textContent = 'Sessions Complete!'
-    console.log('All sessions complete.');
+//Task fetch logic
+async function fetchTasks() {
+    isLoading = true;
+    const response = await fetch(apiBase + 'tasks', {
+        headers: { 'Authorization': token }
+    });
+    const taskData = await response.json();
+    tasks = taskData;
+    isLoading = false;
+    renderTasks();
 }
 
-let isRunning = true;
-let pausedTime = 0;
+async function updateTask(index) {
+    //Set task complete status to true
+    await fetch(apiBase + 'tasks' + '/' + index, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ task: tasks.find(val => val.id === index).task,
+            completed: 1
+         })
+    });
+    fetchTasks();
+}
 
-//Start and pause button functionality
-startBtn.addEventListener('click', () => {
-    if(!isRunning) {
-        isRunning = true;
+async function deleteTask(index) {
+    //Set task complete status to true
+    await fetch(apiBase + 'tasks' + '/' + index, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': token
+        },
+    });
+    fetchTasks();
+}
 
-        if(pausedTime > 0) {
-            futureTime = Date.now() + pausedTime;
-            pausedTime = 0;
-        } else if(!futureTime) {
-            futureTime = Date.now() + setTime;
-        }
+async function addTask() {
+    //Need to access this value later on. This page hasn't been created yet
+    const taskInput = document.getElementById('taskInput');
+    const task = taskInput.value;
 
-        countDownTimer();
+    if(!task) { return }
+
+    await fetch(apiBase + 'tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ task })
+    });
+    taskInput.value = '';
+    fetchTasks();
+}
+
+//Utility functions
+
+//Load page and read local storage for key
+//Default to login screen and show data if authenticated
+//Reuse this logic for the study session logs
+if(token) {
+    async function run() {
+        await fetchTasks();
+        showDashboard();
     }
-});
-
-pauseBtn.addEventListener('click', () => {
-    if(isRunning) {
-        isRunning = false;
-        pausedTime = futureTime - Date.now();
-        cancelAnimationFrame(timerLoop);
-    }
-});
-
-resetBtn.addEventListener('click', () => {
-    isRunning = false;
-    pausedTime = 0;
-    setTime = 0;
-    futureTime = 0;
-    currentSession = 0;
-    isStudying = true;
-    cancelAnimationFrame(timerLoop);
-
-    minsDisplay.textContent = '00';
-    secsDisplay.textContent = '00';
-    timerTitle.textContent = 'Time Remaining';
-
-    //Update the circle display
-    semicircles.forEach(circle => circle.style.transform = 'rotate(0deg)');
-
-    //Reset the form values
-    //Figure out how to restart the entire study.break loop
-    //studyTime = 0;
-    //breakTime = 0;
-    //numSessions = 0;
-});
+    run();
+}
