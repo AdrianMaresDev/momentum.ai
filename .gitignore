@@ -2,4 +2,3 @@ node_modules
 test.rest
 .env
 *.sqlite
-main.js
