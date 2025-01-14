@@ -14,7 +14,6 @@ let token = localStorage.getItem('token');
 let isLoading = false;
 let isAuthenticating = false;
 let isRegistration = false;
-let selectedTab = 'All';
 let tasks = [];
 
 const apiBase = '/';
@@ -28,6 +27,10 @@ authBtn.addEventListener('click', authenticate);
 registerBtn.addEventListener('click', toggleIsRegister);
 
 //Add function to render tasks later
+
+async function toggleIsRegister() {
+    isRegistration = !isRegistration;
+}
 
 async function authenticate() {
 
