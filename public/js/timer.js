@@ -1,13 +1,3 @@
-const navOpenToggle = document.getElementById('open-nav-toggle');
-const navLinks = document.getElementById('nav-links');
-
-
-//Navigation Toggle
-navOpenToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('hidden');
-    navOpenToggle.classList.toggle('rotate-animation-close');
-});
-
 //TODO
 //Display time depending on user input, counting up to the break.
 //Upon completion, do the same thing with the break input.
