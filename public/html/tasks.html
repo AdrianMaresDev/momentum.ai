@@ -50,44 +50,44 @@
             </div>
         </header>
 
-        <section class="flex flex-col lg:flex-row items-center max-w-[90%] mx-auto mt-16 gap-4 md:gap-0">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold mb-8">Your <span class="text-indigo-500">Task List</span></h1>
-            <p>Keep track of your upcoming assignments and deadlines.</p>
+        <section class="flex flex-col items-center max-w-[90%] mx-auto mt-16 gap-4 md:gap-0">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">Your <span class="text-indigo-500">Task List</span></h1>
+            <p class="text-lg pb-8">Keep track of your upcoming assignments and deadlines.</p>
 
-            <div id="task-header">
-                <h2>Task List</h2>
-                <p id="subheader"></p>
-                <button type="button" id="open-form-btn">New Task</button>
+            <div id="task-header" class="bg-white bg-opacity-50 backdrop-blur-md rounded-lg p-6 text-center">
+                <h2 class="text-2xl pb-4">Task List</h2>
+                <p id="subheader" class="pb-6"></p>
+                <button type="button" id="open-form-btn" class="hover-shadow text-lg px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 text-white">New Task</button>
             </div>
 
-            <form id="task-form">
+            <form id="task-form" class="hidden bg-white bg-opacity-50 p-6 rounded-lg relative flex flex-col w-[50%]">
                 <div>
-                    <h2>New Task</h2>
-                    <button class="svg-button" id="close-form-btn" type="button" aria-label="close form">
+                    <h2 class="text-center text-2xl mb-8">New Task</h2>
+                    <button class="absolute right-[5%] top-[5%]" id="close-form-btn" type="button" aria-label="close form">
                         <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 -960 960 960" width="34px" fill="var(--bg-primary)"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                     </button>
                 </div>
 
-                <div>
-                    <label for="title-input">Title</label>
-                    <input required type="text" autocomplete="off" class="form-input" id="title-input">
+                <div class="flex flex-col">
+                    <label for="title-input" class="pb-2 text-lg">Title</label>
+                    <input required type="text" autocomplete="off" id="title-input" placeholder="Biology Essay Outline" class="border-indigo-500 border-2 p-2 rounded-lg mb-4">
 
-                    <label for="date-input">Date</label>
-                    <input required type="date" autocomplete="off" class="form-input" id="date-input">
+                    <label for="date-input" class="pb-2 text-lg">Date</label>
+                    <input required type="date" autocomplete="off" id="date-input" class="border-indigo-500 border-2 p-2 rounded-lg mb-4">
 
-                    <label for="detail-input">Details</label>
-                    <textarea required type="text" autocomplete="off" class="form-input" id="detail-input"></textarea>
+                    <label for="detail-input" class="pb-2 text-lg">Details</label>
+                    <textarea required type="text" autocomplete="off" id="detail-input" placeholder="Finish the essay outline for chapter 2 biology lesson and submit by Friday. Due by 11:59 pm." rows="5" class="border-indigo-500 border-2 p-2 rounded-lg mb-4"></textarea>
                 </div>
 
-                <button id="add-task-btn" type="submit">Add</button>
+                <button id="add-task-btn" type="submit" class="self-center hover-shadow text-lg px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 text-white">Add Task</button>
             </form>
 
-            <dialog id="close-dialog">
+            <dialog id="close-dialog" class="p-6 rounded-lg text-lg text-center">
                 <form method="dialog">
-                    <p>Discard Task?</p>
-                    <div>
-                        <button class="button" id="discard-btn">Discard</button>
-                        <button class="button" id="cancel-btn">Cancel</button> 
+                    <p class="pb-4">Discard Task?</p>
+                    <div class="flex gap-4">
+                        <button class="text-white bg-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-300" id="discard-btn">Discard</button>
+                        <button class="text-white bg-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-300" id="cancel-btn">Cancel</button> 
                     </div>
                 </form>
             </dialog>

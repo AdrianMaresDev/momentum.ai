@@ -39,7 +39,6 @@ async function authenticate() {
     ) { return }
 
     //Reset error and set isAuthenticating to true
-    //Add error message to HTML later
     error.style.display = 'none';
     isAuthenticating = true;
     authBtn.innerText = 'Authenticating';
