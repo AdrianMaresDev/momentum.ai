@@ -57,14 +57,25 @@ taskForm.addEventListener('submit', (event) => {
 
     //Check if the task already exists
     const taskArrIndex = taskData.findIndex((item) => item.id === currentTask.id);
-    const taskList = {
+    const taskObj = {
 
     //Create a unique ID for each task
-    id: `${titleInput.value.toLowerCase().split(" ").join("-")}-${Date.now()}`,
-    title: titleInput.value,
-    date: dateInput.value,
-    details: detailInput.value,
-}
+        id: `${titleInput.value.toLowerCase().split(" ").join("-")}-${Date.now()}`,
+        title: titleInput.value,
+        date: dateInput.value,
+        details: detailInput.value,
+    }
 
-console.log(taskList);
+    if(taskArrIndex === -1) {
+        taskData.unshift(taskObj);
+    }
+
+    taskData.forEach(({ id, title, date, details }) => {
+        taskContainer.innerHTML += `
+        <div class="task" id="${id}">
+        <p>${title}</p>
+        <p>${date}</p>
+        <p>${details}</p>
+        </div>`
+    })
 });
